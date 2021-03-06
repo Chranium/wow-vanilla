@@ -1,1 +1,0 @@
-/usr/bin/c++  -O3 -DNDEBUG   CMakeFiles/map-extractor.dir/map-extractor/System.cpp.o CMakeFiles/map-extractor.dir/map-extractor/dbcfile.cpp.o CMakeFiles/map-extractor.dir/shared/ExtractorCommon.cpp.o  -o map-extractor ../../../dep/loadlib/libloadlib.a ../../../dep/StormLib/libstormlib.a /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/x86_64-linux-gnu/libbz2.so 
