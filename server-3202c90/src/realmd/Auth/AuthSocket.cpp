@@ -402,7 +402,11 @@ bool AuthSocket::_HandleLogonChallenge()
                 if (strcmp((*result)[3].GetString(), get_remote_address().c_str()))
                 {
                     DEBUG_LOG("[AuthChallenge] Account IP differs");
-                    pkt << (uint8) WOW_FAIL_SUSPENDED;
+#if defined(CLASSIC)
+                    pkt << (uint8)WOW_FAIL_DB_BUSY;
+#else
+                    pkt << (uint8)WOW_FAIL_LOCKED_ENFORCED;
+#endif
                     locked = true;
                 }
                 else
@@ -599,9 +603,9 @@ bool AuthSocket::_HandleLogonProof()
         xferh.file_size = file_size;
 
         send((const char*)&xferh, sizeof(xferh));
-        
+
         InitPatch();
-        
+
         return true;
     }
     /// </ul>
