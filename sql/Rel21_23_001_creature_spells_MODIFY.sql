@@ -32,11 +32,12 @@ BEGIN
     SET @cNewComment = 'creature_spells';
 
     -- Evaluate all settings
-    SET @cCurResult := (SELECT `description` FROM `db_version` ORDER BY `version` DESC, `STRUCTURE` DESC, `CONTENT` DESC LIMIT 0,1);
+    -- SET @cCurResult := (SELECT `description` FROM `db_version` ORDER BY `version` DESC, `STRUCTURE` DESC, `CONTENT` DESC LIMIT 0,1);
+    SET @cCurResult := (SELECT `description` FROM `db_version` WHERE `version`=@cOldVersion AND `structure`=@cOldStructure AND `content`=@cOldContent);
     SET @cOldResult := (SELECT `description` FROM `db_version` WHERE `version`=@cOldVersion AND `structure`=@cOldStructure AND `content`=@cOldContent);
     SET @cNewResult := (SELECT `description` FROM `db_version` WHERE `version`=@cNewVersion AND `structure`=@cNewStructure AND `content`=@cNewContent);
 
-    -- IF (@cCurResult = @cOldResult) THEN    -- Does the current version match the expected version
+    IF (@cCurResult = @cOldResult) THEN    -- Does the current version match the expected version
         -- APPLY UPDATE
         START TRANSACTION;
         -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
@@ -12148,7 +12149,7 @@ BEGIN
                 END IF;
             END IF;
         END IF;
-    -- END IF;
+    END IF;
 END $$
 
 DELIMITER ;
