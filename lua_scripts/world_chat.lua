@@ -13,7 +13,7 @@ local colors = { -- colors for names and misc
     [3] = "|cffE91E63", -- Color for Bad Response
     [4] = "|cff7030A0", -- Color for GM level 1: Moderator
     [5] = "|cffCC00FF", -- Color for GM level 2: Gamemaster
-    [6] = "|cffF400A1"  -- Color for GM level 3: Administrator
+    [6] = "|cffF400A1" -- Color for GM level 3: Administrator
 };
 
 local gmRank = {
@@ -44,7 +44,6 @@ local function ChatSystem(event, player, msg, Type, lang, channel)
                     if (player:GetGMRank() > 0) then
                         local t = table.concat {colors[player:GetGMRank() + 3], "[", channelName, "][",
                                                 player:GetName(), "][", gmRank[player:GetGMRank()], "]: ", msg, "|r"};
-                        SendWorldMessage(t);
                         SendWorldMessage(player:GetGMRank());
                     else
                         local time = GetGameTime();
@@ -57,7 +56,8 @@ local function ChatSystem(event, player, msg, Type, lang, channel)
                                 WorldChannelChat[id].time = time;
                                 WorldChannelChat[id].last_message = msg;
                             else
-                                player:SendBroadcastMessage(colors[6] .. "Se activó el temporizador de spam para el chat global.|r")
+                                player:SendBroadcastMessage(colors[6] ..
+                                                                "Se activó el temporizador de spam para el chat global.|r")
                             end
                         else
                             player:SendBroadcastMessage(colors[6] .. "Se detectó spam en el chat global.|r")
