@@ -1,5 +1,5 @@
 local ChatPrefix = "#w";
-local WorldChannelName = "World Channel";
+local WorldChannelName = "Lithium";
 local CooldownTimer = 5; -- Cooldown in seconds. Set to 0 for no CD obviously.
  
 local Class = { -- Class colors :) Prettier and easier than the elseif crap :) THESE ARE HEX COLORS!
