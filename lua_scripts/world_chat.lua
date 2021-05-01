@@ -1,52 +1,75 @@
-local ChatPrefix = "#w";
-local WorldChannelName = "Lithium";
-local CooldownTimer = 5; -- Cooldown in seconds. Set to 0 for no CD obviously.
- 
-local Class = { -- Class colors :) Prettier and easier than the elseif crap :) THESE ARE HEX COLORS!
-    [1] = "C79C6E", -- Warrior
-    [2] = "F58CBA", -- Paladin
-    [3] = "ABD473", -- Hunter
-    [4] = "FFF569", -- Rogue
-    [5] = "FFFFFF", -- Priest
-    [6] = "C41F3B", -- Death Knight
-    [7] = "0070DE", -- Shaman
-    [8] = "69CCF0", -- Mage
-    [9] = "9482C9", -- Warlock
-    [11] = "FF7d0A" -- Druid
+local PLAYER_EVENT_ON_LOGIN = 3
+local PLAYER_EVENT_ON_CHANNEL_CHAT = 22;
+
+local channelName = "Lithium";
+local channelId = 1;
+local duration = 5; -- in seconds.
+local WorldChannelChat = {};
+
+local colors = { -- colors for names and misc
+    [0] = "|cff3399FF", -- Color for Alliance Name
+    [1] = "|cffE91E63", -- Color for Horde Name
+    [2] = "|cffFFC0C0", -- Color for Normal Chat
+    [3] = "|cffE91E63", -- Color for Bad Response
+    [4] = "|cff7030A0", -- Color for GM level 1: Moderator
+    [5] = "|cffCC00FF", -- Color for GM level 2: Gamemaster
+    [6] = "|cffF400A1"  -- Color for GM level 3: Administrator
 };
- 
-local Rank = {
-    [0] = "7DFF00", -- Player
-    [1] = "E700B1", -- Moderator
-    [2] = "E7A200", -- Game Master
-    [3] = "E7A200", -- Admin
-    [4] = "E7A200" -- Console
+
+local gmRank = {
+    [0] = "jugador",
+    [1] = "moderador",
+    [2] = "GM",
+    [3] = "admin"
 };
- 
--- Do not edit below unless you know what you're doing :)
-if (ChatPrefix:sub(-1) ~= " ") then
-    ChatPrefix = ChatPrefix.." ";
+
+local function Login(event, player)
+    player:SendBroadcastMessage("Usa /1 para conversar en Canal Global Lithium");
 end
- 
-local RCD = {};
-function ChatSystem(event, player, msg, _, lang)
-    if (RCD[player:GetGUIDLow()] == nil) then
-        RCD[player:GetGUIDLow()] = 0;
+
+local function ChatSystem(event, player, msg, Type, lang, channel)
+    local id = player:GetGUIDLow();
+
+    if not (WorldChannelChat[id]) then
+        WorldChannelChat[id] = {
+            time = GetGameTime() - duration,
+            last_message = ""
+        };
     end
 
-    if (msg:sub(1, ChatPrefix:len()) == ChatPrefix) then
-        local r = RCD[player:GetGUIDLow()] - os.clock();
-        if (0 < r) then
-            local s = string.format("|cFFFF0000You must wait %i second(s) before sending another chat message!|r", math.floor(r));
-            player:SendAreaTriggerMessage(s);
-        else
-            RCD[player:GetGUIDLow()] = os.clock() + CooldownTimer;
-            local t = table.concat({"|cff7DFF00[", WorldChannelName, "] [|r|cff", Rank[player:GetGMRank()] or Rank[0], "|Hplayer:", player:GetName(), "|h", player:GetName(), "|h|r|cff7DFF00]: |r|cff", Class[player:GetClass()], msg:sub(ChatPrefix:len()+1), "|r"});
-            SendWorldMessage(t);
+    if (channel == channelId) then
+        if (lang ~= -1) then
+            if (msg ~= "") then
+                if (msg ~= "Away") then
+                    if (player:GetGMRank() > 0) then
+                        local t = table.concat {colors[player:GetGMRank() + 3], "[", channelName, "][",
+                                                player:GetName(), "][", gmRank[player:GetGMRank()], "]: ", msg, "|r"};
+                        SendWorldMessage(t);
+                        SendWorldMessage(player:GetGMRank());
+                    else
+                        local time = GetGameTime();
+                        if (msg ~= WorldChannelChat[id].last_message) then
+                            if ((time - WorldChannelChat[id].time >= duration)) then
+                                local t = table.concat {colors[2], "[", channelName, "]|r", colors[player:GetTeam()],
+                                                        "[", "|Hplayer:", player:GetName(), "|h", player:GetName(),
+                                                        "|h][", player:GetLevel(), "]|r", colors[2], ": ", msg, "|r"};
+                                SendWorldMessage(t);
+                                WorldChannelChat[id].time = time;
+                                WorldChannelChat[id].last_message = msg;
+                            else
+                                player:SendBroadcastMessage(colors[6] .. "Se activó el temporizador de spam para el chat global.|r")
+                            end
+                        else
+                            player:SendBroadcastMessage(colors[6] .. "Se detectó spam en el chat global.|r")
+                        end
+                    end
+                end
+            end
         end
         return false;
     end
 end
- 
-RegisterPlayerEvent(18, ChatSystem);
-RegisterPlayerEvent(4, function(_, player) RCD[player:GetGUIDLow()] = 0; end);
+
+RegisterPlayerEvent(PLAYER_EVENT_ON_LOGIN, Login)
+RegisterPlayerEvent(PLAYER_EVENT_ON_CHANNEL_CHAT, ChatSystem)
+print("Lithium Chat Channel loaded.")
