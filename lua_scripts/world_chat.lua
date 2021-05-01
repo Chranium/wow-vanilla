@@ -24,7 +24,7 @@ local gmRank = {
 };
 
 local function Login(event, player)
-    player:SendBroadcastMessage("Usa /1 para conversar en Canal Global Lithium");
+    player:SendBroadcastMessage("Usa /1 o /3 para conversar en Canal Global Lithium");
 end
 
 local function ChatSystem(event, player, msg, Type, lang, channel)
@@ -33,7 +33,8 @@ local function ChatSystem(event, player, msg, Type, lang, channel)
     if not (WorldChannelChat[id]) then
         WorldChannelChat[id] = {
             time = GetGameTime() - duration,
-            last_message = ""
+            lastMessage = "",
+            isGmEnabled = false
         };
     end
 
@@ -41,26 +42,39 @@ local function ChatSystem(event, player, msg, Type, lang, channel)
         if (lang ~= -1) then
             if (msg ~= "") then
                 if (msg ~= "Away") then
-                    if (player:GetGMRank() > 0) then
-                        local t = table.concat {colors[player:GetGMRank() + 3], "[", channelName, "][",
-                                                player:GetName(), "][", gmRank[player:GetGMRank()], "]: ", msg, "|r"};
-                        SendWorldMessage(t);
+                    if (player:GetGMRank() > 0 and WorldChannelChat[id].isGmEnabled) then
+                        if (msg == ".gm off") then
+                            WorldChannelChat[id].isGmEnabled = false;
+                            player:SendBroadcastMessage("Modo GM en Canal Global desactivado.");
+                        elseif (string.sub(msg, 1, 1) == ".") then
+                            player:SendBroadcastMessage("Estás en canal global, no te deja usar comandos GM.");
+                        else
+                            local t = table.concat {colors[player:GetGMRank() + 3], "[", channelName, "][",
+                                                    player:GetName(), "][", gmRank[player:GetGMRank()], "]: ", msg, "|r"};
+                            SendWorldMessage(t);
+                        end
                     else
+                        if (player:GetGMRank() > 0 and msg == ".gm on") then
+                            WorldChannelChat[id].isGmEnabled = true;
+                            player:SendBroadcastMessage("Modo GM en Canal Global activado.");
+                            return false;
+                        end
+
                         local time = GetGameTime();
-                        if (msg ~= WorldChannelChat[id].last_message) then
+                        if (msg ~= WorldChannelChat[id].lastMessage) then
                             if ((time - WorldChannelChat[id].time >= duration)) then
                                 local t = table.concat {colors[2], "[", channelName, "]|r", colors[player:GetTeam()],
                                                         "[", "|Hplayer:", player:GetName(), "|h", player:GetName(),
                                                         "|h][", player:GetLevel(), "]|r", colors[2], ": ", msg, "|r"};
                                 SendWorldMessage(t);
                                 WorldChannelChat[id].time = time;
-                                WorldChannelChat[id].last_message = msg;
+                                WorldChannelChat[id].lastMessage = msg;
                             else
                                 player:SendBroadcastMessage(colors[6] ..
-                                                                "Se activó el temporizador de spam para el chat global.|r")
+                                                                "Se activó el temporizador de spam para el chat global.|r");
                             end
                         else
-                            player:SendBroadcastMessage(colors[6] .. "Se detectó spam en el chat global.|r")
+                            player:SendBroadcastMessage(colors[6] .. "Se detectó spam en el chat global.|r");
                         end
                     end
                 end
