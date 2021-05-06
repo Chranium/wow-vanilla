@@ -1,0 +1,233 @@
+
+--- DEBUG: --- START
+
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff5b40700 (LWP 13008)]
+[New Thread 0x7ffff533f700 (LWP 13009)]
+[New Thread 0x7ffff4b3e700 (LWP 13010)]
+[New Thread 0x7fffe617a700 (LWP 13013)]
+[New Thread 0x7fffe43f8700 (LWP 13014)]
+[New Thread 0x7fffe3bf7700 (LWP 13015)]
+[New Thread 0x7fffe33f6700 (LWP 13016)]
+[New Thread 0x7fffe2bf5700 (LWP 13017)]
+[New Thread 0x7fffe23f4700 (LWP 13018)]
+[New Thread 0x7fffe1bf3700 (LWP 13019)]
+[New Thread 0x7fffe13f2700 (LWP 13020)]
+[Thread 0x7fffe1bf3700 (LWP 13019) exited]
+
+Thread 10 "mangosd" received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0x7fffe23f4700 (LWP 13018)]
+0x00005555557e4e7e in WorldSession::HandleLootMoneyOpcode(WorldPacket&) ()
+
+--- DEBUG: BACKTRACE FULL
+
+#0  0x00005555557e4e7e in WorldSession::HandleLootMoneyOpcode(WorldPacket&) ()
+No symbol table info available.
+#1  0x00005555557420ac in WorldSession::ExecuteOpcode(OpcodeHandler const&, WorldPacket*) ()
+No symbol table info available.
+#2  0x000055555574566a in WorldSession::Update(PacketFilter&) ()
+No symbol table info available.
+#3  0x00005555558a5e35 in World::UpdateSessions(unsigned int) ()
+No symbol table info available.
+#4  0x00005555558a61c6 in World::Update(unsigned int) ()
+No symbol table info available.
+#5  0x00005555555fd633 in WorldThread::svc() ()
+No symbol table info available.
+#6  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+No symbol table info available.
+#7  0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+No symbol table info available.
+#8  0x00007ffff6f1b6db in start_thread (arg=0x7fffe23f4700) at pthread_create.c:463
+        pd = 0x7fffe23f4700
+        now = <optimized out>
+        unwind_buf = {cancel_jmp_buf = {{jmp_buf = {140736989185792, 3773106197522796951, 140736989183936, 0, 93825157905680, 140737488347456, -3773171620606389865, -3773125900926725737}, mask_was_saved = 0}}, priv = {pad = {0x0, 0x0, 0x0, 0x0}, data = {prev = 0x0, cleanup = 0x0, canceltype = 0}}}
+        not_first_call = <optimized out>
+#9  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+No locals.
+
+--- DEBUG: INFO REGISTERS
+
+rax            0x0	0
+rbx            0x7fffe23f4700	140736989185792
+rcx            0x555562350330	93825208222512
+rdx            0x1	1
+rsi            0xf101000000000001	-1080582435592208383
+rdi            0xf13000333c0249f0	-1067352891636692496
+rbp            0x0	0x0
+rsp            0x7fffe23f3fc0	0x7fffe23f3fc0
+r8             0x3	3
+r9             0x0	0
+r10            0x0	0
+r11            0x206	518
+r12            0x7fffe23f3fc0	140736989183936
+r13            0x0	0
+r14            0x55555f353d10	93825157905680
+r15            0x7fffffffe140	140737488347456
+rip            0x7ffff610171f	0x7ffff610171f <clone+63>
+eflags         0x10246	[ PF ZF IF RF ]
+cs             0x33	51
+ss             0x2b	43
+ds             0x0	0
+es             0x0	0
+fs             0x0	0
+gs             0x0	0
+
+--- DEBUG: CALLS (x/32i $pc)
+
+=> 0x7ffff610171f <clone+63>:	mov    %rax,%rdi
+   0x7ffff6101722 <clone+66>:	mov    $0x3c,%eax
+   0x7ffff6101727 <clone+71>:	syscall 
+   0x7ffff6101729 <clone+73>:	mov    0x2c9738(%rip),%rcx        # 0x7ffff63cae68
+   0x7ffff6101730 <clone+80>:	neg    %eax
+   0x7ffff6101732 <clone+82>:	mov    %eax,%fs:(%rcx)
+   0x7ffff6101735 <clone+85>:	or     $0xffffffffffffffff,%rax
+   0x7ffff6101739 <clone+89>:	retq   
+   0x7ffff610173a:	nopw   0x0(%rax,%rax,1)
+   0x7ffff6101740 <__umount>:	xor    %esi,%esi
+   0x7ffff6101742 <__umount+2>:	jmpq   0x7ffff6101750 <umount2>
+   0x7ffff6101747:	nopw   0x0(%rax,%rax,1)
+   0x7ffff6101750 <umount2>:	mov    $0xa6,%eax
+   0x7ffff6101755 <umount2+5>:	syscall 
+   0x7ffff6101757 <umount2+7>:	cmp    $0xfffffffffffff001,%rax
+   0x7ffff610175d <umount2+13>:	jae    0x7ffff6101760 <umount2+16>
+   0x7ffff610175f <umount2+15>:	retq   
+   0x7ffff6101760 <umount2+16>:	mov    0x2c9701(%rip),%rcx        # 0x7ffff63cae68
+   0x7ffff6101767 <umount2+23>:	neg    %eax
+   0x7ffff6101769 <umount2+25>:	mov    %eax,%fs:(%rcx)
+   0x7ffff610176c <umount2+28>:	or     $0xffffffffffffffff,%rax
+   0x7ffff6101770 <umount2+32>:	retq   
+   0x7ffff6101771:	nopw   %cs:0x0(%rax,%rax,1)
+   0x7ffff610177b:	nopl   0x0(%rax,%rax,1)
+   0x7ffff6101780 <readahead>:	mov    $0xbb,%eax
+   0x7ffff6101785 <readahead+5>:	syscall 
+   0x7ffff6101787 <readahead+7>:	cmp    $0xfffffffffffff001,%rax
+   0x7ffff610178d <readahead+13>:	jae    0x7ffff6101790 <readahead+16>
+   0x7ffff610178f <readahead+15>:	retq   
+   0x7ffff6101790 <readahead+16>:	mov    0x2c96d1(%rip),%rcx        # 0x7ffff63cae68
+   0x7ffff6101797 <readahead+23>:	neg    %eax
+   0x7ffff6101799 <readahead+25>:	mov    %eax,%fs:(%rcx)
+
+--- DEBUG: THREAD APPLY ALL BACKTRACE
+
+Thread 12 (Thread 0x7fffe13f2700 (LWP 13020)):
+#0  0x00007ffff60c47a0 in __GI___nanosleep (requested_time=requested_time@entry=0x7fffe13f1d30, remaining=remaining@entry=0x0) at ../sysdeps/unix/sysv/linux/nanosleep.c:28
+#1  0x00007ffff60f7657 in usleep (useconds=<optimized out>) at ../sysdeps/posix/usleep.c:32
+#2  0x00005555555f2325 in CliThread::svc() ()
+#3  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+#4  0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+#5  0x00007ffff6f1b6db in start_thread (arg=0x7fffe13f2700) at pthread_create.c:463
+#6  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 10 (Thread 0x7fffe23f4700 (LWP 13018)):
+#0  0x00005555557e4e7e in WorldSession::HandleLootMoneyOpcode(WorldPacket&) ()
+#1  0x00005555557420ac in WorldSession::ExecuteOpcode(OpcodeHandler const&, WorldPacket*) ()
+#2  0x000055555574566a in WorldSession::Update(PacketFilter&) ()
+#3  0x00005555558a5e35 in World::UpdateSessions(unsigned int) ()
+#4  0x00005555558a61c6 in World::Update(unsigned int) ()
+#5  0x00005555555fd633 in WorldThread::svc() ()
+#6  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+#7  0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+#8  0x00007ffff6f1b6db in start_thread (arg=0x7fffe23f4700) at pthread_create.c:463
+#9  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 9 (Thread 0x7fffe2bf5700 (LWP 13017)):
+#0  0x00007ffff6f21ad3 in futex_wait_cancelable (private=<optimized out>, expected=0, futex_word=0x7fffe2bf4c18) at ../sysdeps/unix/sysv/linux/futex-internal.h:88
+#1  __pthread_cond_wait_common (abstime=0x0, mutex=0x55555f350578, cond=0x7fffe2bf4bf0) at pthread_cond_wait.c:502
+#2  __pthread_cond_wait (cond=0x7fffe2bf4bf0, mutex=0x55555f350578) at pthread_cond_wait.c:655
+#3  0x0000555555bf7845 in ACE_Condition<ACE_Thread_Mutex>::wait(ACE_Time_Value const*) ()
+#4  0x0000555555c4e77f in ACE_Token::shared_acquire(void (*)(void*), void*, ACE_Time_Value*, ACE_Token::ACE_Token_Op_Type) ()
+#5  0x0000555555c405f1 in ACE_TP_Token_Guard::acquire_read_token(ACE_Time_Value*) ()
+#6  0x0000555555c420e9 in ACE_TP_Reactor::handle_events(ACE_Time_Value*) ()
+#7  0x0000555555c1f47c in ACE_Reactor::run_reactor_event_loop(int (*)(ACE_Reactor*)) ()
+#8  0x000055555574c995 in WorldSocketMgr::svc() ()
+#9  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+#10 0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+#11 0x00007ffff6f1b6db in start_thread (arg=0x7fffe2bf5700) at pthread_create.c:463
+#12 0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 8 (Thread 0x7fffe33f6700 (LWP 13016)):
+#0  0x00007ffff6f21ad3 in futex_wait_cancelable (private=<optimized out>, expected=0, futex_word=0x7fffe33f5c18) at ../sysdeps/unix/sysv/linux/futex-internal.h:88
+#1  __pthread_cond_wait_common (abstime=0x0, mutex=0x55555f350578, cond=0x7fffe33f5bf0) at pthread_cond_wait.c:502
+#2  __pthread_cond_wait (cond=0x7fffe33f5bf0, mutex=0x55555f350578) at pthread_cond_wait.c:655
+#3  0x0000555555bf7845 in ACE_Condition<ACE_Thread_Mutex>::wait(ACE_Time_Value const*) ()
+#4  0x0000555555c4e77f in ACE_Token::shared_acquire(void (*)(void*), void*, ACE_Time_Value*, ACE_Token::ACE_Token_Op_Type) ()
+#5  0x0000555555c405f1 in ACE_TP_Token_Guard::acquire_read_token(ACE_Time_Value*) ()
+#6  0x0000555555c420e9 in ACE_TP_Reactor::handle_events(ACE_Time_Value*) ()
+#7  0x0000555555c1f47c in ACE_Reactor::run_reactor_event_loop(int (*)(ACE_Reactor*)) ()
+#8  0x000055555574c995 in WorldSocketMgr::svc() ()
+#9  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+#10 0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+#11 0x00007ffff6f1b6db in start_thread (arg=0x7fffe33f6700) at pthread_create.c:463
+#12 0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 7 (Thread 0x7fffe3bf7700 (LWP 13015)):
+#0  0x00007ffff60f6e1f in __GI___select (nfds=27, readfds=0x55555f350378, writefds=0x0, exceptfds=0x0, timeout=0x0) at ../sysdeps/unix/sysv/linux/select.c:41
+#1  0x0000555555c2687d in ACE_Select_Reactor_T<ACE_Reactor_Token_T<ACE_Token> >::wait_for_multiple_events(ACE_Select_Reactor_Handle_Set&, ACE_Time_Value*) ()
+#2  0x0000555555c41aed in ACE_TP_Reactor::dispatch_i(ACE_Time_Value*, ACE_TP_Token_Guard&) ()
+#3  0x0000555555c422a9 in ACE_TP_Reactor::handle_events(ACE_Time_Value*) ()
+#4  0x0000555555c1f47c in ACE_Reactor::run_reactor_event_loop(int (*)(ACE_Reactor*)) ()
+#5  0x000055555574c995 in WorldSocketMgr::svc() ()
+#6  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+#7  0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+#8  0x00007ffff6f1b6db in start_thread (arg=0x7fffe3bf7700) at pthread_create.c:463
+#9  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 6 (Thread 0x7fffe43f8700 (LWP 13014)):
+#0  0x00007ffff6f21ad3 in futex_wait_cancelable (private=<optimized out>, expected=0, futex_word=0x55555ca0f4d4) at ../sysdeps/unix/sysv/linux/futex-internal.h:88
+#1  __pthread_cond_wait_common (abstime=0x0, mutex=0x55555ca0f470, cond=0x55555ca0f4a8) at pthread_cond_wait.c:502
+#2  __pthread_cond_wait (cond=0x55555ca0f4a8, mutex=0x55555ca0f470) at pthread_cond_wait.c:655
+#3  0x0000555555bf7845 in ACE_Condition<ACE_Thread_Mutex>::wait(ACE_Time_Value const*) ()
+#4  0x0000555555bf4167 in ACE_Activation_Queue::dequeue(ACE_Time_Value*) ()
+#5  0x0000555555be404c in DelayExecutor::svc() ()
+#6  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+#7  0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+#8  0x00007ffff6f1b6db in start_thread (arg=0x7fffe43f8700) at pthread_create.c:463
+#9  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 5 (Thread 0x7fffe617a700 (LWP 13013)):
+#0  0x00007ffff6f21ad3 in futex_wait_cancelable (private=<optimized out>, expected=0, futex_word=0x55555ca0f4d4) at ../sysdeps/unix/sysv/linux/futex-internal.h:88
+#1  __pthread_cond_wait_common (abstime=0x0, mutex=0x55555ca0f470, cond=0x55555ca0f4a8) at pthread_cond_wait.c:502
+#2  __pthread_cond_wait (cond=0x55555ca0f4a8, mutex=0x55555ca0f470) at pthread_cond_wait.c:655
+#3  0x0000555555bf7845 in ACE_Condition<ACE_Thread_Mutex>::wait(ACE_Time_Value const*) ()
+#4  0x0000555555bf4167 in ACE_Activation_Queue::dequeue(ACE_Time_Value*) ()
+#5  0x0000555555be404c in DelayExecutor::svc() ()
+#6  0x0000555555c43e95 in ACE_Task_Base::svc_run(void*) ()
+#7  0x0000555555c66674 in ACE_Thread_Adapter::invoke() ()
+#8  0x00007ffff6f1b6db in start_thread (arg=0x7fffe617a700) at pthread_create.c:463
+#9  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 4 (Thread 0x7ffff4b3e700 (LWP 13010)):
+#0  0x00007ffff6f25d50 in __GI___nanosleep (requested_time=0x7ffff4b3de30, remaining=0x0) at ../sysdeps/unix/sysv/linux/nanosleep.c:28
+#1  0x0000555555be5217 in ACE_Based::Thread::Sleep(unsigned long) ()
+#2  0x0000555555bda8ad in SqlDelayThread::run() ()
+#3  0x0000555555be4d98 in ACE_Based::Thread::ThreadTask(void*) ()
+#4  0x0000555555c1a410 in ACE_OS_Thread_Adapter::invoke() ()
+#5  0x00007ffff6f1b6db in start_thread (arg=0x7ffff4b3e700) at pthread_create.c:463
+#6  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 3 (Thread 0x7ffff533f700 (LWP 13009)):
+#0  0x00007ffff6f25d50 in __GI___nanosleep (requested_time=0x7ffff533ee30, remaining=0x0) at ../sysdeps/unix/sysv/linux/nanosleep.c:28
+#1  0x0000555555be5217 in ACE_Based::Thread::Sleep(unsigned long) ()
+#2  0x0000555555bda8ad in SqlDelayThread::run() ()
+#3  0x0000555555be4d98 in ACE_Based::Thread::ThreadTask(void*) ()
+#4  0x0000555555c1a410 in ACE_OS_Thread_Adapter::invoke() ()
+#5  0x00007ffff6f1b6db in start_thread (arg=0x7ffff533f700) at pthread_create.c:463
+#6  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 2 (Thread 0x7ffff5b40700 (LWP 13008)):
+#0  0x00007ffff6f25d50 in __GI___nanosleep (requested_time=0x7ffff5b3fe30, remaining=0x0) at ../sysdeps/unix/sysv/linux/nanosleep.c:28
+#1  0x0000555555be5217 in ACE_Based::Thread::Sleep(unsigned long) ()
+#2  0x0000555555bda8ad in SqlDelayThread::run() ()
+#3  0x0000555555be4d98 in ACE_Based::Thread::ThreadTask(void*) ()
+#4  0x0000555555c1a410 in ACE_OS_Thread_Adapter::invoke() ()
+#5  0x00007ffff6f1b6db in start_thread (arg=0x7ffff5b40700) at pthread_create.c:463
+#6  0x00007ffff610171f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+
+Thread 1 (Thread 0x7ffff7fe3740 (LWP 13004)):
+#0  0x00007ffff6f1cd2d in __GI___pthread_timedjoin_ex (threadid=140736989185792, thread_return=0x0, abstime=0x0, block=<optimized out>) at pthread_join_common.c:89
+#1  0x0000555555c4a262 in ACE_Thread_Manager::wait_task(ACE_Task_Base*) ()
+#2  0x00005555555eb76d in main ()
+
+--- DEBUG: --- STOP
+
